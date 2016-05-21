@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <title>VMP</title>
+
+        <style type="text/css">
+            body {
+                margin: 0;
+                text-align: center;
+            }
+            img {
+                max-width: 100%;
+                height: 100%;
+            }
+        </style>
+
+        <script src="https://cdn.jsdelivr.net/lodash/4.12.0/lodash.min.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            var images = [
+              'http://delic.iki.fi/files/ikkunasta.gif',
+              'http://i.imgur.com/3F4qkIC.gif',
+              'http://i.imgur.com/3PINbKK.png',
+              'http://static.tvtropes.org/pmwiki/pub/images/Jurassic_Park_Feces_5395.jpg',
+              'http://memecrunch.com/meme/18UWU/se-oli-ihan-hirveeta-paskaa/image.jpg',
+              'https://media.riemurasia.net/albumit/m12306/Macgyverosaa.jpg',
+              'https://pbs.twimg.com/profile_images/577073445969772544/ilb7eEgr.jpeg',
+              'https://media.giphy.com/media/xTiTnslZ0E5sqMbEac/giphy.gif',
+              'https://media0.giphy.com/media/5saWnCIJL7nmU/200.gif',
+              'https://media2.giphy.com/media/1014RBn4HVSTK/200.gif',
+              'https://qzprod.files.wordpress.com/2015/09/gettyimages-712-24_h8_optimized.gif'
+            ];
+
+            function nextImage() {
+              var img = document.createElement('img');
+              img.id = 'img';
+              img.src = images[_.random(images.length - 1)];
+
+              var old = document.getElementById('img');
+              if (old) {
+                  document.body.removeChild(old);
+              }
+              document.body.appendChild(img);
+            }
+
+            nextImage();
+
+            var delay = location.search.split('d=')[1];
+            setInterval(nextImage, delay && delay >= 1000 && delay <= 10000 ? delay : 5000);
+        </script>
+    </body>
+</html>
