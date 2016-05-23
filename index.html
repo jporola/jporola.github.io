@@ -16,6 +16,8 @@
         <script src="https://cdn.jsdelivr.net/lodash/4.12.0/lodash.min.js"></script>
     </head>
     <body>
+        <img id="img" />
+
         <script type="text/javascript">
             var images = [
               'http://delic.iki.fi/files/ikkunasta.gif',
@@ -31,16 +33,9 @@
               'https://qzprod.files.wordpress.com/2015/09/gettyimages-712-24_h8_optimized.gif'
             ];
 
+            var img = document.getElementById('img');
             function nextImage() {
-              var img = document.createElement('img');
-              img.id = 'img';
               img.src = images[_.random(images.length - 1)];
-
-              var old = document.getElementById('img');
-              if (old) {
-                  document.body.removeChild(old);
-              }
-              document.body.appendChild(img);
             }
 
             nextImage();
@@ -50,4 +45,3 @@
         </script>
     </body>
 </html>
-
