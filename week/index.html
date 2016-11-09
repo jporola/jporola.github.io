@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title></title>
+        <title>week</title>
 
         <style type="text/css">
             html, body {
@@ -12,25 +12,27 @@
                 text-align: center;
             }
             div {
-                line-height: 100vh;
-                font-size: 50vmin;
+                line-height: 50vh;
+                font-size: 25vmin;
+            }
+            .desc {
+                font-size: 50%;
             }
         </style>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/moment.min.js"></script>
     </head>
     <body>
-        <div id="week"></div>
+        <div>
+            <span id="isoweek"></span>
+            <span class="desc">(ISO)</span>
+        </div>
+        <div><span id="week"></span></div>
 
         <script type="text/javascript">
-            Date.prototype.getWeekNumber = function(){
-                var d = new Date(+this);
-                d.setHours(0,0,0);
-                d.setDate(d.getDate()+4-(d.getDay()||7));
-                return Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
-            };
-
-            var week = new Date().getWeekNumber();
-            document.title = week;
-            document.getElementById('week').innerHTML = week;
+            var m = moment();
+            document.getElementById('week').innerHTML = m.week();
+            document.getElementById('isoweek').innerHTML = m.isoWeek();
         </script>
     </body>
 </html>
