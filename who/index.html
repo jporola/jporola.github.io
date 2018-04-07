@@ -7,7 +7,23 @@
    </head>
     <body>
         <p id="error"></p>
-        <div>Need more challenge? Try query param 'count' (<a href="?count=3">3</a>-<a href="?count=9">9</a>)</div>
+
+        <div>
+            <div>Need more challenge?</div>
+            <datalist id="countOptions">
+                <option value="3">
+                <option value="4">
+                <option value="5">
+                <option value="6">
+                <option value="7">
+                <option value="8">
+                <option value="9">
+            </datalist>
+            <span>3</span>
+            <input id="countSelector" type="range" list="countOptions" min="3" max="9" disabled="disabled" />
+            <span>9</span>
+        </div>
+
         <div><a href="./firstname.html">Too easy</a></div>
         <div id="score"></div>
         <div id="images"></div>
@@ -15,11 +31,8 @@
 
         <script type="module">
             import * as api from './api.js';
-            import * as config from './config.js';
             import * as dom from './domUtils.js';
             import * as arrayUtils from './arrayUtils.js';
-
-            const guessCount = config.guessCount;
 
             const setError = (text) => { dom.setText('error', text); }
             const setScore = (text) => { dom.setText('score', text); }
@@ -54,7 +67,10 @@
                         });
                     }
 
-                    const init = () => {
+                    const init = (guessCount) => {
+                        dom.removeAllChilds('images');
+                        dom.removeAllChilds('names');
+
                         for (let i = 0; i < guessCount; i++) {
                             const img = document.createElement('img');
                             img.addEventListener('click', (event) => {
@@ -92,7 +108,22 @@
                         }
                     }
 
-                    init();
+                    let guessCount = 3;
+
+                    const countSelector = document.getElementById('countSelector');
+                    countSelector.value = guessCount;
+                    countSelector.addEventListener('change', (event) => {
+                        guessCount = event.srcElement.valueAsNumber;
+                        init(guessCount);
+
+                        persons = arrayUtils.shuffle(persons);
+                        score = 0;
+                        setScore(score);
+                        getNext(persons, 0, guessCount, score);
+                    });
+                    countSelector.disabled = false;
+
+                    init(guessCount);
                     getNext(persons, 0, guessCount, score);
                 } catch(error) {
                     console.error(error);
