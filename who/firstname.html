@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Who art thou?</title>
-
         <link rel="stylesheet" href="main.css" />
-   </head>
+    </head>
     <body>
-        <p id="error"></p>
-        <div><a href="./">Too hard</a></div>
+        <button id="toCorrectOrder">Too hard</button>
         <div id="score"></div>
         <img id="image" class="single" />
 
@@ -18,22 +15,23 @@
                    required
                    autocomplete="off"
                    autofocus />
-            <input type="submit"
-                   name="submit"
-                   value="guess"
-                   disabled="disabled" />
+            <button type="submit"
+                    name="submit"
+                    disabled="disabled">guess</button>
         </form>
 
         <script type="module">
             import * as api from './api.js';
-            import * as config from './config.js';
             import * as dom from './domUtils.js';
             import * as arrayUtils from './arrayUtils.js';
 
             const guessCount = 1;
 
-            const setError = (text) => { dom.setText('error', text); }
             const setScore = (text) => { dom.setText('score', text); }
+
+            document.getElementById('toCorrectOrder').addEventListener('click', () => {
+                dom.loadPage('correctorder');
+            });
 
             const getPersons = async () => {
                 try {
@@ -58,7 +56,7 @@
 
                     let correct = getNext(persons, 0, guessCount, score);
 
-                    const guess = async (event) => {
+                    const guess = (event) => {
                         event.preventDefault()
 
                         const regex = new RegExp(event.srcElement.firstname.value.trim(), 'i');
@@ -84,10 +82,10 @@
                     document.forms.guess.elements.submit.disabled = false;
                 } catch(error) {
                     console.error(error);
-                    setError(error.message);
+                    dom.setError(error.message);
 
                     if (error.statusCode === 401) {
-                        location.replace('./login.html')
+                        dom.loadPage('login');
                     }
                 }
             }

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="main.css" />
+    </head>
+    <body>
+        <div>
+            <div>Need more challenge?</div>
+            <datalist id="countOptions">
+                <option value="3">
+                <option value="4">
+                <option value="5">
+                <option value="6">
+                <option value="7">
+                <option value="8">
+                <option value="9">
+            </datalist>
+            <span>3</span>
+            <input id="countSelector" type="range" list="countOptions" min="3" max="9" disabled="disabled" />
+            <span>9</span>
+        </div>
+
+        <button id="toFirstname">Too easy</button>
+        <div id="score"></div>
+        <div id="images"></div>
+        <div id="names"></div>
+
+        <script type="module">
+            import * as api from './api.js';
+            import * as dom from './domUtils.js';
+            import * as arrayUtils from './arrayUtils.js';
+
+            const setScore = (text) => { dom.setText('score', text); }
+
+            document.getElementById('toFirstname').addEventListener('click', () => {
+                dom.loadPage('firstname');
+            });
+
+            const getPersons = async () => {
+                try {
+                    const response = await api.getPersons();
+
+                    let persons = arrayUtils.shuffle(response);
+
+                    let personOffset = 0;
+                    let score = 0;
+                    setScore(score);
+                    let currentGuess = 0;
+
+                    const getNext = (persons, personOffset, guessCount, score) => {
+                        const guess = persons.slice(personOffset, personOffset + guessCount);
+                        const answers = arrayUtils.shuffle(guess);
+                        currentGuess = 0;
+
+                        const imgUrl = 'https://hohtopp.goforecrew.com/api/images/ID/resized';
+                        guess.forEach((value, index) => {
+                            const img = document.getElementById('images').children[index];
+                            img.src = imgUrl.replace('ID', value.avatar);
+                            img.id = answers.map(o => o.id).indexOf(value.id);
+                            img.classList.remove('correct');
+                        });
+                        answers.forEach((value, index) => {
+                            const name = document.getElementById('names').children[index];
+                            name.textContent = value.name;
+                            name.classList.remove('correct');
+                        });
+                    }
+
+                    const init = (guessCount) => {
+                        dom.removeAllChilds('images');
+                        dom.removeAllChilds('names');
+
+                        for (let i = 0; i < guessCount; i++) {
+                            const img = document.createElement('img');
+                            img.addEventListener('click', (event) => {
+                                if (event.srcElement.id.includes('done')) {
+                                    return;
+                                }
+                                if (event.srcElement.id == currentGuess) {
+                                    event.srcElement.id += 'done';
+                                    event.srcElement.classList.add('correct');
+                                    score++;
+                                    setScore(score);
+                                    document.getElementById('names').children[currentGuess].classList.add('correct');
+
+                                    if (currentGuess >= guessCount - 1) {
+                                        personOffset += guessCount;
+                                        if (personOffset + guessCount > persons.length - 1) {
+                                            personOffset = 0;
+                                            persons = arrayUtils.shuffle(persons);
+                                        }
+                                        getNext(persons, personOffset, guessCount, score);
+                                    } else {
+                                        currentGuess++;
+                                    }
+                                } else {
+                                    persons = arrayUtils.shuffle(persons);
+                                    score = 0;
+                                    setScore(score);
+                                    getNext(persons, 0, guessCount, score);
+                                }
+                            });
+                            document.getElementById('images').appendChild(img);
+
+                            const name = document.createElement('div');
+                            document.getElementById('names').appendChild(name);
+                        }
+                    }
+
+                    let guessCount = 3;
+
+                    const countSelector = document.getElementById('countSelector');
+                    countSelector.value = guessCount;
+                    countSelector.addEventListener('change', (event) => {
+                        guessCount = event.srcElement.valueAsNumber;
+                        init(guessCount);
+
+                        persons = arrayUtils.shuffle(persons);
+                        score = 0;
+                        setScore(score);
+                        getNext(persons, 0, guessCount, score);
+                    });
+                    countSelector.disabled = false;
+
+                    init(guessCount);
+                    getNext(persons, 0, guessCount, score);
+                } catch(error) {
+                    console.error(error);
+                    dom.setError(error.message);
+
+                    if (error.statusCode === 401) {
+                        dom.loadPage('login');
+                    }
+                }
+            }
+
+            getPersons();
+        </script>
+    </body>
+</html>
