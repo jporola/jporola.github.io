@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Who art thou?</title>
+
+        <link rel="stylesheet" href="main.css" />
+   </head>
+    <body>
+        <p id="error"></p>
+        <div>Need more challenge? Try query param 'count' (<a href="?count=3">3</a>-<a href="?count=9">9</a>)</div>
+        <div><a href="./firstname.html">Too easy</a></div>
+        <div id="score"></div>
+        <div id="images"></div>
+        <div id="names"></div>
+
+        <script type="module">
+            import * as api from './api.js';
+            import * as config from './config.js';
+            import * as dom from './domUtils.js';
+            import * as arrayUtils from './arrayUtils.js';
+
+            const guessCount = config.guessCount;
+
+            const setError = (text) => { dom.setText('error', text); }
+            const setScore = (text) => { dom.setText('score', text); }
+
+            const getPersons = async () => {
+                try {
+                    const response = await api.getPersons();
+
+                    let persons = arrayUtils.shuffle(response);
+
+                    let personOffset = 0;
+                    let score = 0;
+                    setScore(score);
+                    let currentGuess = 0;
+
+                    const getNext = (persons, personOffset, guessCount, score) => {
+                        const guess = persons.slice(personOffset, personOffset + guessCount);
+                        const answers = arrayUtils.shuffle(guess);
+                        currentGuess = 0;
+
+                        const imgUrl = 'https://hohtopp.goforecrew.com/api/images/ID/resized';
+                        guess.forEach((value, index) => {
+                            const img = document.getElementById('images').children[index];
+                            img.src = imgUrl.replace('ID', value.avatar);
+                            img.id = answers.map(o => o.id).indexOf(value.id);
+                            img.classList.remove('correct');
+                        });
+                        answers.forEach((value, index) => {
+                            const name = document.getElementById('names').children[index];
+                            name.textContent = value.name;
+                            name.classList.remove('correct');
+                        });
+                    }
+
+                    const init = () => {
+                        for (let i = 0; i < guessCount; i++) {
+                            const img = document.createElement('img');
+                            img.addEventListener('click', (event) => {
+                                if (event.srcElement.id.includes('done')) {
+                                    return;
+                                }
+                                if (event.srcElement.id == currentGuess) {
+                                    event.srcElement.id += 'done';
+                                    event.srcElement.classList.add('correct');
+                                    score++;
+                                    setScore(score);
+                                    document.getElementById('names').children[currentGuess].classList.add('correct');
+
+                                    if (currentGuess >= guessCount - 1) {
+                                        personOffset += guessCount;
+                                        if (personOffset + guessCount > persons.length - 1) {
+                                            personOffset = 0;
+                                            persons = arrayUtils.shuffle(persons);
+                                        }
+                                        getNext(persons, personOffset, guessCount, score);
+                                    } else {
+                                        currentGuess++;
+                                    }
+                                } else {
+                                    persons = arrayUtils.shuffle(persons);
+                                    score = 0;
+                                    setScore(score);
+                                    getNext(persons, 0, guessCount, score);
+                                }
+                            });
+                            document.getElementById('images').appendChild(img);
+
+                            const name = document.createElement('div');
+                            document.getElementById('names').appendChild(name);
+                        }
+                    }
+
+                    init();
+                    getNext(persons, 0, guessCount, score);
+                } catch(error) {
+                    console.error(error);
+                    setError(error.message);
+
+                    if (error.statusCode === 401) {
+                        location.replace('./login.html')
+                    }
+                }
+            }
+
+            getPersons();
+        </script>
+    </body>
+</html>
