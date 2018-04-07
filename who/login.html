@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="main.css" />
+    </head>
+    <body>
+        <form name="login" action="return false;" method="POST">
+            <input type="email" name="email" placeholder="email" required autofocus />
+            <input type="password" name="password" placeholder="password" required />
+            <button type="submit" name="submit" disabled="disabled">login</button>
+        </form>
+
+        <script type="module">
+            import * as api from './api.js';
+            import * as dom from './domUtils.js';
+
+            const login = async (event) => {
+                event.preventDefault()
+
+                dom.setError('');
+
+                try {
+                    await api.login(event.srcElement.email.value, event.srcElement.password.value);
+                    dom.loadPage('index');
+                } catch(error) {
+                    console.error(error);
+                    dom.setError(error.message);
+                }
+            }
+            document.forms.login.addEventListener('submit', login);
+            document.forms.login.elements.submit.disabled = false;
+        </script>
+    </body>
+</html>

@@ -1,0 +1,48 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+main {
+    overflow: hidden;
+}
+input, button {
+    width: 90%;
+    border-radius: .5em;
+    text-align: center;
+    margin: .5em 0;
+    font-size: 3em;
+}
+img {
+    width: 15em;
+    margin: .5em;
+}
+img.single {
+    width: 25em;
+}
+img:hover {
+    opacity: .75;
+}
+#error {
+    color: red;
+}
+#score {
+    font-size: 3em;
+}
+img.correct {
+    opacity: .5;
+}
+#names {
+    margin: 1em;
+    font-size: 2em;
+}
+#names div {
+    border: .1em solid transparent;
+}
+div.correct {
+    color: white;
+    border: .1em solid green;
+    background: green;
+}

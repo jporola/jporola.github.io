@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="main.css" />
+    </head>
+    <body>
+        <button id="toCorrectOrder">Too hard</button>
+        <div id="score"></div>
+        <img id="image" class="single" />
+
+        <form name="guess" action="return false;" method="POST">
+            <input type="text"
+                   name="firstname"
+                   placeholder="first name"
+                   required
+                   autocomplete="off"
+                   autofocus />
+            <button type="submit"
+                    name="submit"
+                    disabled="disabled">guess</button>
+        </form>
+
+        <script type="module">
+            import * as api from './api.js';
+            import * as dom from './domUtils.js';
+            import * as arrayUtils from './arrayUtils.js';
+
+            const guessCount = 1;
+
+            const setScore = (text) => { dom.setText('score', text); }
+
+            document.getElementById('toCorrectOrder').addEventListener('click', () => {
+                dom.loadPage('correctorder');
+            });
+
+            const getPersons = async () => {
+                try {
+                    const response = await api.getPersons();
+
+                    let persons = arrayUtils.shuffle(response);
+
+                    let personOffset = 0;
+                    let score = 0;
+                    setScore(score);
+                    let currentGuess = 0;
+
+                    const getNext = (persons, personOffset, guessCount, score) => {
+                        const guess = persons.slice(personOffset, personOffset + guessCount);
+
+                        const imgUrl = 'https://hohtopp.goforecrew.com/api/images/ID/resized';
+                        const img = document.getElementById('image');
+                        img.src = imgUrl.replace('ID', guess[0].avatar);
+
+                        return guess[0].name.split(' ')[0].trim();
+                    }
+
+                    let correct = getNext(persons, 0, guessCount, score);
+
+                    const guess = (event) => {
+                        event.preventDefault()
+
+                        const guess = event.srcElement.firstname.value.trim();
+                        const regex = new RegExp(guess, 'i');
+                        if (correct.length === guess.length && correct.match(regex)) {
+                            score++;
+                            setScore(score);
+
+                            personOffset += guessCount;
+                            if (personOffset + guessCount > persons.length - 1) {
+                                personOffset = 0;
+                                persons = arrayUtils.shuffle(persons);
+                            }
+                            correct = getNext(persons, personOffset, guessCount, score);
+                        } else {
+                            persons = arrayUtils.shuffle(persons);
+                            score = 0;
+                            setScore(score);
+                            correct = getNext(persons, 0, guessCount, score);
+                        }
+                        event.srcElement.firstname.value = '';
+                    }
+                    document.forms.guess.addEventListener('submit', guess);
+                    document.forms.guess.elements.submit.disabled = false;
+                } catch(error) {
+                    console.error(error);
+                    dom.setError(error.message);
+
+                    if (error.statusCode === 401) {
+                        dom.loadPage('login');
+                    }
+                }
+            }
+
+            getPersons();
+        </script>
+    </body>
+</html>
