@@ -59,8 +59,9 @@
                     const guess = (event) => {
                         event.preventDefault()
 
-                        const regex = new RegExp(event.srcElement.firstname.value.trim(), 'i');
-                        if (correct.match(regex)) {
+                        const guess = event.srcElement.firstname.value.trim();
+                        const regex = new RegExp(guess, 'i');
+                        if (correct.length === guess.length && correct.match(regex)) {
                             score++;
                             setScore(score);
 
