@@ -13,6 +13,5 @@ export const removeAllChilds = (elementId) => {
 }
 
 export const loadPage = (name) => {
-    const cachebust = Date.now();
-    parent.document.page.data = `${name}.html?${cachebust}`;
+    parent.document.page.data = `${name}.html`;
 }
