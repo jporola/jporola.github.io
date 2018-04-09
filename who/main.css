@@ -4,6 +4,8 @@ html, body {
     margin: 0;
     padding: 0;
     text-align: center;
+    font-size: 1.5vmax;
+    font-family: sans-serif;
 }
 main {
     overflow: hidden;
@@ -15,9 +17,12 @@ input, button {
     margin: .5em 0;
     font-size: 3em;
 }
+input[type="range"] {
+    transform: scale(3);
+    width: 30%;
+}
 img {
-    width: 15em;
-    margin: .5em;
+    width: 100%;
 }
 img.single {
     width: 25em;
@@ -34,8 +39,17 @@ img:hover {
 img.correct {
     opacity: .5;
 }
+#images {
+    display: grid;
+    grid-template-columns: repeat(4 , 1fr);
+    grid-gap: 1em;
+    align-items: center;
+    justify-items: center;
+}
 #names {
-    margin: 1em;
+    grid-row: 2 / 4;
+    grid-column: 2 / 4;
+    width: 100%;
     font-size: 2em;
 }
 #names div {
@@ -45,4 +59,14 @@ div.correct {
     color: white;
     border: .1em solid green;
     background: green;
+}
+
+@media (orientation: landscape) {
+    #images {
+        grid-template-columns: repeat(6 , 1fr);
+    }
+    #names {
+        grid-row: 1 / 4;
+        grid-column: 3 / 5;
+    }
 }
