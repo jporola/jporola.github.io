@@ -21,7 +21,7 @@
 
                 try {
                     await api.login(event.srcElement.email.value, event.srcElement.password.value);
-                    dom.loadPage('index');
+                    dom.loadDefaultPage();
                 } catch(error) {
                     console.error(error);
                     dom.setError(error.message);
