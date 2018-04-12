@@ -34,7 +34,7 @@ img:hover {
     color: red;
 }
 #score {
-    font-size: 3em;
+    font-size: 5em;
 }
 img.correct {
     opacity: .5;
