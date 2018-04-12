@@ -19,9 +19,9 @@
             </datalist>
             <input id="countSelector" type="range" list="countOptions" min="3" max="12" disabled="disabled" />
         </div>
-
-        <button id="toFirstname">Too easy</button>
+        <button id="toFirstname">:)</button>
         <div id="score"></div>
+        <div id="total"></div>
         <div id="images"></div>
 
         <script type="module">
@@ -40,6 +40,8 @@
                     const response = await api.getPersons();
 
                     let persons = arrayUtils.shuffle(response);
+
+                    dom.setText('total', '(' + persons.length + ')');
 
                     let personOffset = 0;
                     let score = 0;
