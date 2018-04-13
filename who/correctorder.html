@@ -27,7 +27,7 @@
         <script type="module">
             import * as api from './api.js';
             import * as dom from './domUtils.js';
-            import * as arrayUtils from './arrayUtils.js';
+            import ArrayUtils from './ArrayUtils.js';
             import ImagePreloader from './ImagePreloader.js';
 
             const setScore = (text) => { dom.setText('score', text); }
@@ -40,7 +40,7 @@
                 try {
                     const response = await api.getPersons();
 
-                    let persons = arrayUtils.shuffle(response);
+                    let persons = ArrayUtils.shuffle(response);
 
                     new ImagePreloader(persons.map((o) => { return o.avatar; }));
 
@@ -53,7 +53,7 @@
 
                     const getNext = (persons, personOffset, guessCount, score) => {
                         const guess = persons.slice(personOffset, personOffset + guessCount);
-                        const answers = arrayUtils.shuffle(guess);
+                        const answers = ArrayUtils.shuffle(guess);
                         currentGuess = 0;
 
                         guess.forEach((value, index) => {
@@ -92,14 +92,14 @@
                                         personOffset += guessCount;
                                         if (personOffset + guessCount > persons.length - 1) {
                                             personOffset = 0;
-                                            persons = arrayUtils.shuffle(persons);
+                                            persons = ArrayUtils.shuffle(persons);
                                         }
                                         getNext(persons, personOffset, guessCount, score);
                                     } else {
                                         currentGuess++;
                                     }
                                 } else {
-                                    persons = arrayUtils.shuffle(persons);
+                                    persons = ArrayUtils.shuffle(persons);
                                     score = 0;
                                     setScore(score);
                                     getNext(persons, 0, guessCount, score);
@@ -120,7 +120,7 @@
                         guessCount = event.srcElement.valueAsNumber;
                         init(guessCount);
 
-                        persons = arrayUtils.shuffle(persons);
+                        persons = ArrayUtils.shuffle(persons);
                         score = 0;
                         setScore(score);
                         getNext(persons, 0, guessCount, score);

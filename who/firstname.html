@@ -25,7 +25,7 @@
         <script type="module">
             import * as api from './api.js';
             import * as dom from './domUtils.js';
-            import * as arrayUtils from './arrayUtils.js';
+            import ArrayUtils from './ArrayUtils.js';
             import ImagePreloader from './ImagePreloader.js';
 
             const guessCount = 1;
@@ -40,7 +40,7 @@
                 try {
                     const response = await api.getPersons();
 
-                    let persons = arrayUtils.shuffle(response);
+                    let persons = ArrayUtils.shuffle(response);
 
                     new ImagePreloader(persons.map((o) => { return o.avatar; }));
 
@@ -74,11 +74,11 @@
                             personOffset += guessCount;
                             if (personOffset + guessCount > persons.length - 1) {
                                 personOffset = 0;
-                                persons = arrayUtils.shuffle(persons);
+                                persons = ArrayUtils.shuffle(persons);
                             }
                             correct = getNext(persons, personOffset, guessCount, score);
                         } else {
-                            persons = arrayUtils.shuffle(persons);
+                            persons = ArrayUtils.shuffle(persons);
                             score = 0;
                             setScore(score);
                             correct = getNext(persons, 0, guessCount, score);
