@@ -87,11 +87,11 @@
                     }
                     document.forms.guess.addEventListener('submit', guess);
                 } catch(error) {
-                    console.error(error);
-                    dom.setError(error.message);
-
                     if (error.statusCode === 401) {
                         dom.loadPage('login');
+                    } else {
+                        console.error(error);
+                        dom.setError(error.message);
                     }
                 }
             }

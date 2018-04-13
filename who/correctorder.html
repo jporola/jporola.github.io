@@ -130,11 +130,11 @@
                     init(guessCount);
                     getNext(persons, 0, guessCount, score);
                 } catch(error) {
-                    console.error(error);
-                    dom.setError(error.message);
-
                     if (error.statusCode === 401) {
                         dom.loadPage('login');
+                    } else {
+                        console.error(error);
+                        dom.setError(error.message);
                     }
                 }
             }
