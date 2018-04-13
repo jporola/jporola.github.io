@@ -26,6 +26,7 @@
             import * as api from './api.js';
             import * as dom from './domUtils.js';
             import * as arrayUtils from './arrayUtils.js';
+            import ImagePreloader from './imagepreloader.js';
 
             const guessCount = 1;
 
@@ -41,6 +42,8 @@
 
                     let persons = arrayUtils.shuffle(response);
 
+                    new ImagePreloader(persons.map((o) => { return o.avatar; }));
+
                     dom.setText('total', '(' + persons.length + ')');
 
                     let personOffset = 0;
@@ -51,9 +54,8 @@
                     const getNext = (persons, personOffset, guessCount, score) => {
                         const guess = persons.slice(personOffset, personOffset + guessCount);
 
-                        const imgUrl = 'https://hohtopp.goforecrew.com/api/images/ID/resized';
                         const img = document.getElementById('image');
-                        img.src = imgUrl.replace('ID', guess[0].avatar);
+                        img.src = ImagePreloader.getUrlTemplate().replace('ID', guess[0].avatar);
 
                         return guess[0].name.split(' ')[0].trim();
                     }
