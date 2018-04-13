@@ -42,7 +42,7 @@
 
                     let persons = ArrayUtils.shuffle(response);
 
-                    new ImagePreloader(persons.map((o) => { return o.avatar; }));
+                    new ImagePreloader(persons.map(o => o.avatar));
 
                     dom.setText('total', '(' + persons.length + ')');
 
