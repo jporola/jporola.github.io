@@ -16,7 +16,7 @@ export const getPersons = async () => {
     const url = 'https://2umdflpqk3.execute-api.us-west-2.amazonaws.com/prod/persons'
     const options = {
         headers: {
-            'x-accesstoken': localStorage.getItem(accesstokenKey)
+            'x-accesstoken': sessionStorage.getItem(accesstokenKey)
         }
     };
 
@@ -60,7 +60,7 @@ export const login = async (user, pass) => {
     if (response.ok) {
         const json = await response.json();
         if (!json.error) {
-            return localStorage.setItem(accesstokenKey, json.key);
+            return sessionStorage.setItem(accesstokenKey, json.key);
         }
         throw json;
     }

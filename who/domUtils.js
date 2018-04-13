@@ -15,3 +15,7 @@ export const removeAllChilds = (elementId) => {
 export const loadPage = (name) => {
     parent.document.page.data = `${name}.html`;
 }
+
+export const loadDefaultPage = () => {
+    loadPage('correctorder');
+}

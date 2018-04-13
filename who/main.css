@@ -4,9 +4,14 @@ html, body {
     margin: 0;
     padding: 0;
     text-align: center;
+    font-size: 1.5vmax;
+    font-family: sans-serif;
 }
 main {
     overflow: hidden;
+}
+form {
+    width: 100%;
 }
 input, button {
     width: 90%;
@@ -15,12 +20,12 @@ input, button {
     margin: .5em 0;
     font-size: 3em;
 }
-img {
-    width: 15em;
-    margin: .5em;
+input[type="range"] {
+    transform: scale(3);
+    width: 30%;
 }
-img.single {
-    width: 25em;
+img {
+    width: 100%;
 }
 img:hover {
     opacity: .75;
@@ -29,14 +34,37 @@ img:hover {
     color: red;
 }
 #score {
-    font-size: 3em;
+    font-size: 5em;
 }
 img.correct {
     opacity: .5;
 }
+#images {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(4 , 1fr);
+    grid-gap: 1em;
+    align-items: center;
+    justify-items: center;
+}
 #names {
-    margin: 1em;
+    grid-row: 2 / 4;
+    grid-column: 2 / 4;
+    width: 100%;
     font-size: 2em;
+}
+#container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 1em;
+    align-items: center;
+    justify-items: center;
+}
+#image {
+    grid-row: 3;
+    width: auto;
+    height: 50vh;
+    max-width: 90vw;
 }
 #names div {
     border: .1em solid transparent;
@@ -45,4 +73,23 @@ div.correct {
     color: white;
     border: .1em solid green;
     background: green;
+}
+
+@media (orientation: landscape) {
+    #images {
+        grid-template-columns: repeat(6 , 1fr);
+    }
+    #names {
+        grid-row: 1 / 4;
+        grid-column: 3 / 5;
+    }
+    #container {
+        grid-template-columns: repeat(2 , 1fr);
+    }
+    #image {
+        grid-row: 1 / 4;
+        grid-column: 1;
+        height: 75vh;
+        max-width: 75vw;
+    }
 }

@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="main.css" />
     </head>
     <body>
-        <form name="login" action="return false;" method="POST">
+        <form name="login" onsubmit="return false;">
             <input type="email" name="email" placeholder="email" required autofocus />
             <input type="password" name="password" placeholder="password" required />
             <button type="submit" name="submit" disabled="disabled">login</button>
@@ -21,7 +21,7 @@
 
                 try {
                     await api.login(event.srcElement.email.value, event.srcElement.password.value);
-                    dom.loadPage('index');
+                    dom.loadDefaultPage();
                 } catch(error) {
                     console.error(error);
                     dom.setError(error.message);
