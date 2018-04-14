@@ -1,5 +1,5 @@
 @keyframes loadingIndicatorMove {
-    0% { left: calc(20% - 5em); }
+    0% { left: calc(20% - 10em); }
     100% { left: calc(80% - 5em); }
 }
 
@@ -25,10 +25,11 @@
     position: fixed;
     top: calc(50% - 5em);
     left: calc(50% - 5em);
-    width: 5em;
-    height: 5em;
-    border: 3em double;
-    border-radius: 5em;
+    width: 10em;
+    height: 10em;
+    border-width: 2em;
+    border-radius: 10em;
+    border-style: solid dotted solid;
     animation: loadingIndicatorMove 1s ease-in-out infinite alternate,
                loadingIndicatorRotate 1s linear infinite alternate,
                loadingIndicatorColor .25s ease-out infinite alternate;
