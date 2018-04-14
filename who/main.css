@@ -3,6 +3,8 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    background: black;
+    color: whitesmoke;
     text-align: center;
     font-size: 1.5vmax;
     font-family: sans-serif;
@@ -14,24 +16,39 @@ form {
     width: 100%;
 }
 input, button {
-    width: 90%;
-    border-radius: .5em;
-    text-align: center;
     margin: .5em 0;
+    outline: 0;
+    border-radius: 1em;
+    text-align: center;
     font-size: 3em;
+}
+input {
+    width: 90%;
+    border: .1em solid darkorange;
+    background: whitesmoke;
+    color: royalblue;
 }
 input[type="range"] {
     transform: scale(3);
     width: 30%;
+}
+button {
+    width: 2em;
+    height: 2em;
+    background: steelblue;
+    border: .2em double darkslategray;
+    color: whitesmoke;
+    font-family: monospace;
+}
+button:hover {
+    background-color: dodgerblue;
+    border-color: midnightblue;
 }
 img {
     width: 100%;
 }
 img:hover {
     opacity: .75;
-}
-#error {
-    color: red;
 }
 #score {
     font-size: 5em;
@@ -67,12 +84,12 @@ img.correct {
     max-width: 90vw;
 }
 #names div {
+    margin-bottom: -.1em;
     border: .1em solid transparent;
 }
-div.correct {
-    color: white;
-    border: .1em solid green;
-    background: green;
+#names div.correct {
+    border-color: darkseagreen;
+    background: seagreen;
 }
 
 @media (orientation: landscape) {

@@ -19,7 +19,7 @@
             </datalist>
             <input id="countSelector" type="range" list="countOptions" min="3" max="12" disabled="disabled" />
         </div>
-        <button id="toFirstname">:)</button>
+        <button id="toFirstname">&rArr;</button>
         <div id="score"></div>
         <div id="total"></div>
         <div id="images"></div>
@@ -27,11 +27,15 @@
         <script type="module">
             import * as api from './api.js';
             import * as dom from './domUtils.js';
-            import * as arrayUtils from './arrayUtils.js';
+            import ArrayUtils from './ArrayUtils.js';
+            import ImagePreloader from './ImagePreloader.js';
+            import LoadingIndicator from './LoadingIndicator.js';
+            import Error from './Error.js';
 
             const setScore = (text) => { dom.setText('score', text); }
 
             document.getElementById('toFirstname').addEventListener('click', () => {
+                LoadingIndicator.show();
                 dom.loadPage('firstname');
             });
 
@@ -39,7 +43,9 @@
                 try {
                     const response = await api.getPersons();
 
-                    let persons = arrayUtils.shuffle(response);
+                    let persons = ArrayUtils.shuffle(response);
+
+                    new ImagePreloader(persons.map(o => o.avatar));
 
                     dom.setText('total', '(' + persons.length + ')');
 
@@ -50,13 +56,12 @@
 
                     const getNext = (persons, personOffset, guessCount, score) => {
                         const guess = persons.slice(personOffset, personOffset + guessCount);
-                        const answers = arrayUtils.shuffle(guess);
+                        const answers = ArrayUtils.shuffle(guess);
                         currentGuess = 0;
 
-                        const imgUrl = 'https://hohtopp.goforecrew.com/api/images/ID/resized';
                         guess.forEach((value, index) => {
                             const img = document.getElementById('images').children[index + 1];
-                            img.src = imgUrl.replace('ID', value.avatar);
+                            img.src = ImagePreloader.getUrlTemplate().replace('ID', value.avatar);
                             img.id = answers.map(o => o.id).indexOf(value.id);
                             img.classList.remove('correct');
                         });
@@ -90,14 +95,14 @@
                                         personOffset += guessCount;
                                         if (personOffset + guessCount > persons.length - 1) {
                                             personOffset = 0;
-                                            persons = arrayUtils.shuffle(persons);
+                                            persons = ArrayUtils.shuffle(persons);
                                         }
                                         getNext(persons, personOffset, guessCount, score);
                                     } else {
                                         currentGuess++;
                                     }
                                 } else {
-                                    persons = arrayUtils.shuffle(persons);
+                                    persons = ArrayUtils.shuffle(persons);
                                     score = 0;
                                     setScore(score);
                                     getNext(persons, 0, guessCount, score);
@@ -118,7 +123,7 @@
                         guessCount = event.srcElement.valueAsNumber;
                         init(guessCount);
 
-                        persons = arrayUtils.shuffle(persons);
+                        persons = ArrayUtils.shuffle(persons);
                         score = 0;
                         setScore(score);
                         getNext(persons, 0, guessCount, score);
@@ -127,12 +132,14 @@
 
                     init(guessCount);
                     getNext(persons, 0, guessCount, score);
-                } catch(error) {
-                    console.error(error);
-                    dom.setError(error.message);
 
+                    LoadingIndicator.hide();
+                } catch(error) {
                     if (error.statusCode === 401) {
                         dom.loadPage('login');
+                    } else {
+                        console.error(error);
+                        Error.show(error.message);
                     }
                 }
             }

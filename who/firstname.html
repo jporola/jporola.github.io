@@ -5,7 +5,7 @@
     </head>
     <body>
         <div id="container">
-            <button id="toCorrectOrder">:(</button>
+            <button id="toCorrectOrder">&lArr;</button>
             <div>
                 <div id="score"></div>
                 <div id="total"></div>
@@ -25,13 +25,17 @@
         <script type="module">
             import * as api from './api.js';
             import * as dom from './domUtils.js';
-            import * as arrayUtils from './arrayUtils.js';
+            import ArrayUtils from './ArrayUtils.js';
+            import ImagePreloader from './ImagePreloader.js';
+            import LoadingIndicator from './LoadingIndicator.js';
+            import Error from './Error.js';
 
             const guessCount = 1;
 
             const setScore = (text) => { dom.setText('score', text); }
 
             document.getElementById('toCorrectOrder').addEventListener('click', () => {
+                LoadingIndicator.show();
                 dom.loadPage('correctorder');
             });
 
@@ -39,7 +43,9 @@
                 try {
                     const response = await api.getPersons();
 
-                    let persons = arrayUtils.shuffle(response);
+                    let persons = ArrayUtils.shuffle(response);
+
+                    new ImagePreloader(persons.map(o => o.avatar));
 
                     dom.setText('total', '(' + persons.length + ')');
 
@@ -51,9 +57,8 @@
                     const getNext = (persons, personOffset, guessCount, score) => {
                         const guess = persons.slice(personOffset, personOffset + guessCount);
 
-                        const imgUrl = 'https://hohtopp.goforecrew.com/api/images/ID/resized';
                         const img = document.getElementById('image');
-                        img.src = imgUrl.replace('ID', guess[0].avatar);
+                        img.src = ImagePreloader.getUrlTemplate().replace('ID', guess[0].avatar);
 
                         return guess[0].name.split(' ')[0].trim();
                     }
@@ -72,11 +77,11 @@
                             personOffset += guessCount;
                             if (personOffset + guessCount > persons.length - 1) {
                                 personOffset = 0;
-                                persons = arrayUtils.shuffle(persons);
+                                persons = ArrayUtils.shuffle(persons);
                             }
                             correct = getNext(persons, personOffset, guessCount, score);
                         } else {
-                            persons = arrayUtils.shuffle(persons);
+                            persons = ArrayUtils.shuffle(persons);
                             score = 0;
                             setScore(score);
                             correct = getNext(persons, 0, guessCount, score);
@@ -84,12 +89,14 @@
                         event.srcElement.firstname.value = '';
                     }
                     document.forms.guess.addEventListener('submit', guess);
-                } catch(error) {
-                    console.error(error);
-                    dom.setError(error.message);
 
+                    LoadingIndicator.hide();
+                } catch(error) {
                     if (error.statusCode === 401) {
                         dom.loadPage('login');
+                    } else {
+                        console.error(error);
+                        Error.show(error.message);
                     }
                 }
             }

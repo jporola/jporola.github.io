@@ -3,16 +3,20 @@
     <head>
         <title>Who art thou?</title>
 
+        <link rel="stylesheet" href="LoadingIndicator.css" />
+        <link rel="stylesheet" href="Error.css" />
         <link rel="stylesheet" href="main.css" />
    </head>
     <body>
         <main>
-            <p id="error"></p>
             <object name="page" data="" type="text/html"></object>
         </main>
 
         <script type="module">
             import * as dom from './domUtils.js';
+            import LoadingIndicator from './LoadingIndicator.js';
+
+            LoadingIndicator.show();
 
             const resize = () => {
                 const page = document.page;
