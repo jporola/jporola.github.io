@@ -14,11 +14,12 @@
             import * as api from './api.js';
             import * as dom from './domUtils.js';
             import LoadingIndicator from './LoadingIndicator.js';
+            import Error from './Error.js';
 
             const login = async (event) => {
                 event.preventDefault()
 
-                dom.setError('');
+                Error.hide();
 
                 try {
                     await api.login(event.srcElement.email.value, event.srcElement.password.value);
@@ -26,7 +27,7 @@
                     dom.loadDefaultPage();
                 } catch(error) {
                     console.error(error);
-                    dom.setError(error.message);
+                    Error.show(error.message);
                 }
             }
             document.forms.login.addEventListener('submit', login);

@@ -28,6 +28,7 @@
             import ArrayUtils from './ArrayUtils.js';
             import ImagePreloader from './ImagePreloader.js';
             import LoadingIndicator from './LoadingIndicator.js';
+            import Error from './Error.js';
 
             const guessCount = 1;
 
@@ -95,7 +96,7 @@
                         dom.loadPage('login');
                     } else {
                         console.error(error);
-                        dom.setError(error.message);
+                        Error.show(error.message);
                     }
                 }
             }

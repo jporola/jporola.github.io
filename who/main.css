@@ -50,9 +50,6 @@ img {
 img:hover {
     opacity: .75;
 }
-#error {
-    color: red;
-}
 #score {
     font-size: 5em;
 }
