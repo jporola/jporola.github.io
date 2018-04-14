@@ -13,6 +13,7 @@
         <script type="module">
             import * as api from './api.js';
             import * as dom from './domUtils.js';
+            import LoadingIndicator from './LoadingIndicator.js';
 
             const login = async (event) => {
                 event.preventDefault()
@@ -21,6 +22,7 @@
 
                 try {
                     await api.login(event.srcElement.email.value, event.srcElement.password.value);
+                    LoadingIndicator.show();
                     dom.loadDefaultPage();
                 } catch(error) {
                     console.error(error);
@@ -29,6 +31,8 @@
             }
             document.forms.login.addEventListener('submit', login);
             document.forms.login.elements.submit.disabled = false;
+
+            LoadingIndicator.hide();
         </script>
     </body>
 </html>

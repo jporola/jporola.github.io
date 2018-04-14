@@ -3,6 +3,8 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    background: black;
+    color: whitesmoke;
     text-align: center;
     font-size: 1.5vmax;
     font-family: sans-serif;

@@ -27,12 +27,14 @@
             import * as dom from './domUtils.js';
             import ArrayUtils from './ArrayUtils.js';
             import ImagePreloader from './ImagePreloader.js';
+            import LoadingIndicator from './LoadingIndicator.js';
 
             const guessCount = 1;
 
             const setScore = (text) => { dom.setText('score', text); }
 
             document.getElementById('toCorrectOrder').addEventListener('click', () => {
+                LoadingIndicator.show();
                 dom.loadPage('correctorder');
             });
 
@@ -86,6 +88,8 @@
                         event.srcElement.firstname.value = '';
                     }
                     document.forms.guess.addEventListener('submit', guess);
+
+                    LoadingIndicator.hide();
                 } catch(error) {
                     if (error.statusCode === 401) {
                         dom.loadPage('login');

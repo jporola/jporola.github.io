@@ -29,10 +29,12 @@
             import * as dom from './domUtils.js';
             import ArrayUtils from './ArrayUtils.js';
             import ImagePreloader from './ImagePreloader.js';
+            import LoadingIndicator from './LoadingIndicator.js';
 
             const setScore = (text) => { dom.setText('score', text); }
 
             document.getElementById('toFirstname').addEventListener('click', () => {
+                LoadingIndicator.show();
                 dom.loadPage('firstname');
             });
 
@@ -129,6 +131,8 @@
 
                     init(guessCount);
                     getNext(persons, 0, guessCount, score);
+
+                    LoadingIndicator.hide();
                 } catch(error) {
                     if (error.statusCode === 401) {
                         dom.loadPage('login');

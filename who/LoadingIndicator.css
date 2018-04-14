@@ -1,0 +1,35 @@
+@keyframes loadingIndicatorMove {
+    0% { left: calc(20% - 5em); }
+    100% { left: calc(80% - 5em); }
+}
+
+@keyframes loadingIndicatorRotate {
+    100% { transform: rotateX(1.5turn) rotateY(1turn) rotateZ(.5turn); }
+}
+
+@keyframes loadingIndicatorColor {
+    0% { border-color: royalblue; }
+    100% { border-color: darkslategray; }
+}
+
+#loadingIndicatorContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+}
+
+#loadingIndicator {
+    position: fixed;
+    top: calc(50% - 5em);
+    left: calc(50% - 5em);
+    width: 5em;
+    height: 5em;
+    border: 3em double;
+    border-radius: 5em;
+    animation: loadingIndicatorMove 1s ease-in-out infinite alternate,
+               loadingIndicatorRotate 1s linear infinite alternate,
+               loadingIndicatorColor .25s ease-out infinite alternate;
+}
