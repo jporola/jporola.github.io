@@ -26,7 +26,7 @@ input {
     width: 90%;
     border: .1em solid darkorange;
     background: whitesmoke;
-    color: royalblue;
+    color: steelblue;
 }
 input[type="range"] {
     transform: scale(3);
@@ -59,7 +59,7 @@ img.correct {
 #images {
     margin-top: 1em;
     display: grid;
-    grid-template-columns: repeat(4 , 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 1em;
     align-items: center;
     justify-items: center;
@@ -68,7 +68,7 @@ img.correct {
     grid-row: 2 / 4;
     grid-column: 2 / 4;
     width: 100%;
-    font-size: 2em;
+    font-size: 1.5em;
 }
 #container {
     display: grid;
@@ -94,14 +94,14 @@ img.correct {
 
 @media (orientation: landscape) {
     #images {
-        grid-template-columns: repeat(6 , 1fr);
+        grid-template-columns: repeat(8, 1fr);
     }
     #names {
         grid-row: 1 / 4;
-        grid-column: 3 / 5;
+        grid-column: 4 / 6;
     }
     #container {
-        grid-template-columns: repeat(2 , 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
     #image {
         grid-row: 1 / 4;
