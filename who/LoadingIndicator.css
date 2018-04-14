@@ -1,10 +1,19 @@
 @keyframes loadingIndicatorMove {
-    0% { left: calc(20% - 10em); }
-    100% { left: calc(80% - 5em); }
+    0% { left: calc(20vw - 10em); }
+    100% { left: calc(80vw - 5em); }
+}
+
+@keyframes loadingIndicatorMoveInner {
+    0% { left: calc(20vw - 6.5em); }
+    100% { left: calc(80vw - 1.5em); }
 }
 
 @keyframes loadingIndicatorRotate {
     100% { transform: rotateX(1.5turn) rotateY(1turn) rotateZ(.5turn); }
+}
+
+@keyframes loadingIndicatorRotateInner {
+    100% { transform: rotateX(1turn); }
 }
 
 @keyframes loadingIndicatorColor {
@@ -22,7 +31,7 @@
 }
 
 #loadingIndicator {
-    position: fixed;
+    position: absolute;
     top: calc(50% - 5em);
     left: calc(50% - 5em);
     width: 10em;
@@ -32,5 +41,19 @@
     border-style: solid dotted solid;
     animation: loadingIndicatorMove 1s ease-in-out infinite alternate,
                loadingIndicatorRotate 1s linear infinite alternate,
+               loadingIndicatorColor .25s ease-out infinite alternate;
+}
+
+#loadingIndicatorInner {
+    position: absolute;
+    top: calc(50% - 1.5em);
+    left: calc(50% - 1.5em);
+    width: 3em;
+    height: 3em;
+    border-width: 2em;
+    border-radius: 4em;
+    border-style: double;
+    animation: loadingIndicatorMoveInner 1s ease-in-out infinite alternate,
+               loadingIndicatorRotateInner 1s linear infinite alternate,
                loadingIndicatorColor .25s ease-out infinite alternate;
 }
