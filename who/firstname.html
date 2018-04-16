@@ -19,6 +19,7 @@
                         required
                         autocomplete="off"
                         autofocus />
+                <div>("cafe" matches "Caf&eacute;")</div>
             </form>
         </div>
 
@@ -69,8 +70,7 @@
                         event.preventDefault()
 
                         const guess = event.srcElement.firstname.value.trim();
-                        const regex = new RegExp(guess, 'i');
-                        if (correct.length === guess.length && correct.match(regex)) {
+                        if (correct.localeCompare(guess, undefined, { sensitivity: 'base' }) === 0) {
                             score++;
                             setScore(score);
 
