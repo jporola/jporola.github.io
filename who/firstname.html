@@ -66,7 +66,7 @@
 
                     let correct = getNext(persons, 0, guessCount, score);
 
-                    const guess = (event) => {
+                    const guess = async (event) => {
                         event.preventDefault()
 
                         const guess = event.srcElement.firstname.value.trim();
@@ -81,6 +81,7 @@
                             }
                             correct = getNext(persons, personOffset, guessCount, score);
                         } else {
+                            await dom.incorrect();
                             persons = ArrayUtils.shuffle(persons);
                             score = 0;
                             setScore(score);
