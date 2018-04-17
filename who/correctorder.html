@@ -80,7 +80,7 @@
 
                         for (let i = 0; i < guessCount; i++) {
                             const img = document.createElement('img');
-                            img.addEventListener('click', (event) => {
+                            img.addEventListener('click', async (event) => {
                                 if (event.srcElement.id.includes('done')) {
                                     return;
                                 }
@@ -102,6 +102,7 @@
                                         currentGuess++;
                                     }
                                 } else {
+                                    await dom.incorrect();
                                     persons = ArrayUtils.shuffle(persons);
                                     score = 0;
                                     setScore(score);

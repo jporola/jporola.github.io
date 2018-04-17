@@ -1,16 +1,19 @@
 html, body {
+    overflow-x: hidden;
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
-    background: black;
     color: whitesmoke;
     text-align: center;
     font-size: 1.5vmax;
     font-family: sans-serif;
 }
 main {
+    width: 100%;
+    height: 100%;
     overflow: hidden;
+    background: black;
 }
 form {
     width: 100%;
@@ -109,4 +112,26 @@ img.correct {
         height: 75vh;
         max-width: 75vw;
     }
+}
+
+@keyframes incorrect {
+    10%, 90% {
+        transform: translateX(1vw);
+    }
+    20%, 80% {
+        transform: translateX(-2vw);
+    }
+    30%, 50%, 70% {
+        transform: translateX(4vw);
+    }
+    40%, 60% {
+        transform: translateX(-4vw);
+    }
+    50% {
+        background-color: crimson;
+    }
+}
+
+.incorrect {
+    animation: incorrect .75s ease-in-out;
 }

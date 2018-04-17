@@ -16,3 +16,18 @@ export const loadPage = (name) => {
 export const loadDefaultPage = () => {
     loadPage('correctorder');
 }
+
+export const incorrect = () => {
+    return new Promise(resolve => {
+        document.body.addEventListener('animationend', (event) => {
+            if (event.animationName === 'incorrect') {
+                event.srcElement.classList.remove('incorrect');
+                resolve();
+            }
+        }, {
+            once: true
+        });
+
+        document.body.classList.add('incorrect');
+    });
+}
