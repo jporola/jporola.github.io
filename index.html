@@ -1,59 +1,64 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>VMP</title>
 
-        <style type="text/css">
-            html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-                text-align: center;
-            }
-            img {
-                max-width: 100%;
-                min-height: 100%;
-            }
-        </style>
+<head>
+    <title>VMP</title>
 
-        <script src="https://cdn.jsdelivr.net/lodash/4.12.0/lodash.min.js"></script>
-    </head>
-    <body>
-        <img id="img" alt="Nothing found yet" />
+    <style type="text/css">
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
 
-        <script type="text/javascript">
-            var params = {};
-            var pairs = location.search.substring(1).split('&');
-            _.forEach(pairs, function(item) {
-                var key = decodeURIComponent(item.split('=')[0]);
-                var value = decodeURIComponent(item.split('=')[1]);
-                params[key] = value;
-            });
+        img {
+            max-width: 100%;
+            min-height: 100%;
+        }
+    </style>
 
-            var img = document.getElementById('img');
-            var delay = params.delay;
-            var interval = delay && delay >= 3000 && delay <= 10000 ? delay : 5000;
-            var tag = params.tag || 'table+flip';
+    <script src="https://cdn.jsdelivr.net/lodash/4.12.0/lodash.min.js"></script>
+</head>
 
-            function nextImage() {
-                var url = 'http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=' + tag;
+<body>
+    <img id="img" alt="Nothing found yet" />
 
-                fetch(url).then(function(response) {
-                    response.json().then(function(json) {
-                        var src = _.get(json, 'data.image_url');
-                        if (!!src) {
-                            img.src = src;
-                        }
-                        setTimeout(nextImage, interval);
-                    });
-                }).catch(function(error) {
-                    console.log(error);
+    <script type="text/javascript">
+        var params = {};
+        var pairs = location.search.substring(1).split('&');
+        _.forEach(pairs, function (item) {
+            var key = decodeURIComponent(item.split('=')[0]);
+            var value = decodeURIComponent(item.split('=')[1]);
+            params[key] = value;
+        });
+
+        var img = document.getElementById('img');
+        var delay = params.delay;
+        var interval = delay && delay >= 3000 && delay <= 10000 ? delay : 5000;
+        var tag = params.tag || 'tableflip';
+
+        function nextImage() {
+            var url = 'http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=' + tag;
+
+            fetch(url).then(function (response) {
+                response.json().then(function (json) {
+                    var src = _.get(json, 'data.image_url');
+                    if (!!src) {
+                        img.src = src;
+                    }
                     setTimeout(nextImage, interval);
                 });
-            }
+            }).catch(function (error) {
+                console.log(error);
+                setTimeout(nextImage, interval);
+            });
+        }
 
-            nextImage();
-        </script>
-    </body>
+        nextImage();
+    </script>
+</body>
+
 </html>
