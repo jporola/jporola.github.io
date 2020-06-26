@@ -36,8 +36,7 @@
         });
 
         var img = document.getElementById('img');
-        var delay = params.delay;
-        var interval = delay && delay >= 3000 && delay <= 10000 ? delay : 5000;
+        var interval = 15 * 60 * 1000;
         var tag = params.tag || 'tableflip';
 
         function nextImage() {
